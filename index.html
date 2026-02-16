@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=240, initial-scale=1.0" />
+    <title>freej2me-web</title>
+  </head>
+
+  <body>
+    <style>
+      :root {
+        --primary-bg: #f2f2f2;
+        --secondary-bg: #ffffff;
+        --header-bg: #2c3e50;
+        --header-text: #ffffff;
+        --text-color: #333333;
+        --border-color: #dddddd;
+        --button-bg: #3498db;
+        --button-text: #ffffff;
+        --button-hover-bg: #2980b9;
+        --danger-bg: #e74c3c;
+        --danger-hover-bg: #c0392b;
+        --font-family: Arial, sans-serif;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: var(--primary-bg);
+        font-family: var(--font-family);
+        font-size: 14px;
+        color: var(--text-color);
+      }
+
+      main {
+        width: 240px;
+        margin: 0 auto;
+        padding-bottom: 20px;
+      }
+
+      /* Header and Menu Bar */
+      .header {
+        background-color: var(--header-bg);
+        color: var(--header-text);
+        padding: 8px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 1.2em;
+      }
+
+      .menu-btn {
+        background: none;
+        border: 1px solid var(--header-text);
+        color: var(--header-text);
+        padding: 4px 8px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 0.9em;
+      }
+
+      .menu-dropdown {
+        display: none;
+        position: absolute;
+        top: 38px;
+        right: 10px;
+        background-color: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 101;
+        width: 120px;
+      }
+
+      .menu-dropdown button {
+        display: block;
+        width: 100%;
+        padding: 10px 15px;
+        border: none;
+        background: none;
+        text-align: left;
+        cursor: pointer;
+        color: var(--text-color);
+        font-size: 1em;
+        border-bottom: 1px solid var(--border-color);
+        box-sizing: border-box;
+      }
+      .menu-dropdown button:last-child {
+        border-bottom: none;
+      }
+
+      .menu-dropdown button:hover {
+        background-color: #f0f0f0;
+      }
+
+      /* Screen Management */
+      .screen {
+        display: none;
+        padding: 10px;
+      }
+
+      .screen.active {
+        display: block;
+      }
+      
+      h2 {
+        font-size: 1.1em;
+        margin-top: 0;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 5px;
+      }
+
+      /* Game List */
+      .game-list {
+        background-color: var(--secondary-bg);
+        border-radius: 4px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        margin-bottom: 10px;
+      }
+
+      .game-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .game-item:last-child {
+        border-bottom: none;
+      }
+
+      .game-item a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: var(--text-color);
+        flex-grow: 1;
+        gap: 10px;
+      }
+
+      .game-item .icon {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+      }
+
+      .game-item .game-info {
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .btn-manage {
+          padding: 5px 10px;
+          font-size: 0.9em;
+          border: 1px solid #ccc;
+          background-color: #f9f9f9;
+          cursor: pointer;
+          border-radius: 3px;
+          flex-shrink: 0;
+      }
+      .btn-manage:hover {
+          background-color: #e9e9e9;
+      }
+
+      /* Forms and Controls */
+       .btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 1em;
+        cursor: pointer;
+        border: 1px solid var(--button-bg);
+        background-color: var(--button-bg);
+        color: var(--button-text);
+        border-radius: 3px;
+        text-align: center;
+        text-decoration: none;
+        box-sizing: border-box;
+      }
+      .btn:hover {
+          background-color: var(--button-hover-bg);
+      }
+      .btn-danger {
+          background-color: var(--danger-bg);
+          border-color: var(--danger-bg);
+      }
+      .btn-danger:hover {
+          background-color: var(--danger-hover-bg);
+      }
+      .btn-outline {
+          background-color: transparent;
+          color: var(--text-color);
+          border: 1px solid #aaa;
+      }
+      .btn-outline:hover {
+          background-color: #f0f0f0;
+      }
+
+
+      .form-group {
+        margin-bottom: 12px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+      }
+
+      input[type="file"],
+      select,
+      input[type="number"],
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: 3px;
+        box-sizing: border-box;
+        font-size: 1em;
+      }
+      
+      .custom-size-inputs {
+          display: flex;
+          gap: 10px;
+          margin-top: 5px;
+      }
+
+      .checkbox {
+          display: flex;
+          align-items: center;
+          margin-bottom: 8px;
+          background-color: #f9f9f9;
+          padding: 8px;
+          border-radius: 3px;
+      }
+      .checkbox input {
+          margin-right: 8px;
+      }
+
+      /* Preview Container */
+      .preview-container {
+          background-color: var(--secondary-bg);
+          padding: 10px;
+          border: 1px solid var(--border-color);
+          border-radius: 3px;
+          margin-bottom: 15px;
+          text-align: center;
+      }
+      .preview-container .preview-icon {
+          width: 48px;
+          height: 48px;
+          margin: 0 auto 5px;
+      }
+       .preview-container .preview-name {
+           font-weight: bold;
+       }
+
+      /* Keyboard Controls */
+      .keyboard-controls table {
+          width: 100%;
+          font-size: 0.9em;
+      }
+       .keyboard-controls .key {
+          background-color: var(--secondary-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 2px;
+          padding: 2px 4px;
+          font-family: monospace;
+       }
+       .keyboard-controls td:first-child {
+            padding-right: 10px;
+        }
+
+       #loading {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        inset: 0;
+        font-size: 1.5em;
+        background-color: #fff;
+        z-index: 200;
+      }
+       .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid var(--button-bg);
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 15px;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    
+    <div id="loading"><div class="spinner"></div>Loading...</div>
+
+    <main id="main" style="display: none">
+      <div class="header">
+        <h1>freej2me</h1>
+        <button class="menu-btn" id="menu-btn">Menu</button>
+        <div class="menu-dropdown" id="menu-dropdown">
+          <button id="import-data-btn">Import Data</button>
+          <button id="export-data-btn">Export Data</button>
+          <button id="keyboard-controls-btn">Controls</button>
+        </div>
+      </div>
+
+      <!-- Main Screen: Game List -->
+      <div id="screen-main" class="screen active">
+        <h2>Installed Games</h2>
+        <div id="game-list" class="game-list">
+          <!-- Game items will be populated by JS -->
+        </div>
+        <button id="add-game-screen-btn" class="btn">Add New Game</button>
+      </div>
+
+      <!-- Add/Edit Game Screen -->
+      <div id="screen-add-edit" class="screen">
+        <h2 id="add-edit-text">Add new game</h2>
+        
+        <div id="file-input-step">
+          <div class="form-group">
+            <label for="game-file-input">Select JAR file</label>
+            <input type="file" id="game-file-input" accept=".jar" />
+          </div>
+        </div>
+
+        <div id="file-input-jad-step" style="display: none">
+          <p>This game may require a JAD file. Please upload one.</p>
+          <div class="form-group">
+            <label for="upload-descriptor-file-input">Select JAD file</label>
+            <input type="file" id="upload-descriptor-file-input" accept=".jad" />
+          </div>
+          <button id="continue-without-jad" class="btn btn-outline">Continue without JAD</button>
+        </div>
+
+        <div id="file-input-loading" style="display: none; text-align: center; padding: 20px;">
+          <div class="spinner" style="margin: 0 auto 10px;"></div>
+          <span>Analyzing...</span>
+        </div>
+
+        <div id="add-manage-step" style="display: none">
+          <div id="preview" class="preview-container">
+            <img class="preview-icon" />
+            <div class="preview-name">Game name</div>
+          </div>
+          
+          <div id="edit-settings-container">
+             <div class="form-group">
+              <label for="phoneType">Phone type:</label>
+              <select id="phoneType">
+                <option value="Standard">Standard</option>
+                <option value="Nokia">Nokia</option>
+                <option value="Motorola">Motorola</option>
+                <option value="Siemens">Siemens</option>
+                <option value="SonyEricsson">SonyEricsson</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="screenSize">Screen Size:</label>
+              <select id="screenSize">
+                <option value="240x320">240x320</option>
+                <option value="176x220">176x220</option>
+                <option value="176x208">176x208</option>
+                <option value="128x160">128x160</option>
+                <option value="128x128">128x128</option>
+                <option value="custom">Custom</option>
+              </select>
+              <div class="custom-size-inputs" id="edit-custom-size-inputs" style="display:none;">
+                <input type="number" placeholder="W" id="customWidth" min="1"/>
+                <input type="number" placeholder="H" id="customHeight" min="1"/>
+              </div>
+            </div>
+             <div class="form-group">
+              <label for="fontSize">Font size:</label>
+              <select id="fontSize">
+                <option value="0">Dynamic</option>
+                <option value="1">Small</option>
+                <option value="2">Medium</option>
+                <option value="3">Large</option>
+              </select>
+            </div>
+             <div class="form-group">
+              <label for="dgFormat">Graphics Format:</label>
+              <select id="dgFormat">
+                <option value="444">444 RGB</option>
+                <option value="4444">4444 ARGB</option>
+                <option value="565">565 ARGB</option>
+                <option value="888">888 ARGB</option>
+                <option value="8888">8888 ARGB</option>
+              </select>
+            </div>
+            <label class="checkbox"><input type="checkbox" name="enableSound" /> Enable sound</label>
+            <label class="checkbox"><input type="checkbox" name="forceFullscreen" /> Force fullscreen</label>
+            <label class="checkbox"><input type="checkbox" name="textureDisableFilter" /> Disable texture filtering</label>
+          </div>
+          <button class="btn" id="add-save-button">Add game</button>
+          <div id="manage-controls-after-save" style="margin-top:20px; display:none;">
+              <button id="wipe-data-btn" class="btn btn-outline">Wipe Game Data</button>
+              <button id="uninstall-btn" class="btn btn-danger">Uninstall Game</button>
+          </div>
+        </div>
+        <button id="back-to-main-btn" class="btn btn-outline">Back to List</button>
+      </div>
+
+      <!-- Keyboard Controls Screen -->
+      <div id="screen-keyboard" class="screen">
+          <h2>Keyboard Controls</h2>
+          <div class="keyboard-controls">
+            <table>
+              <tr><td><span class="key">F1</span>, <span class="key">Q</span></td><td>Left soft key</td></tr>
+              <tr><td><span class="key">F2</span>, <span class="key">W</span></td><td>Right soft key</td></tr>
+              <tr><td><span class="key">Arrows</span></td><td>Directional Pad</td></tr>
+              <tr><td><span class="key">Enter</span></td><td>Action key</td></tr>
+              <tr><td><span class="key">0-9</span></td><td>Keypad numbers</td></tr>
+              <tr><td><span class="key">Esc</span></td><td>Options Menu</td></tr>
+            </table>
+          </div>
+          <button id="back-from-keyboard-btn" class="btn btn-outline">Back</button>
+      </div>
+      
+      <!-- Hidden elements for JS interaction -->
+      <input type="file" id="import-data-file" style="display: none" accept=".zip"/>
+      <a id="export-data-link" style="display: none" download="freej2me-data.zip"></a>
+      <button id="clear-current" style="display:none;"></button>
+
+    </main>
+
+    <script>
+        // UI Navigation Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const screens = {
+                main: document.getElementById('screen-main'),
+                addEdit: document.getElementById('screen-add-edit'),
+                keyboard: document.getElementById('screen-keyboard'),
+            };
+
+            function showScreen(screenName) {
+                Object.values(screens).forEach(s => s.classList.remove('active'));
+                if (screens[screenName]) {
+                    screens[screenName].classList.add('active');
+                }
+                window.scrollTo(0, 0);
+            }
+
+            const menuBtn = document.getElementById('menu-btn');
+            const menuDropdown = document.getElementById('menu-dropdown');
+            menuBtn.addEventListener('click', () => {
+                menuDropdown.style.display = menuDropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+                    menuDropdown.style.display = 'none';
+                }
+            });
+
+            document.getElementById('add-game-screen-btn').addEventListener('click', () => {
+                document.getElementById('clear-current').click(); // Use existing logic to reset form
+                showScreen('addEdit');
+            });
+
+            document.getElementById('back-to-main-btn').addEventListener('click', () => {
+                 if(confirm("Discard any changes?")) {
+                    showScreen('main');
+                 }
+            });
+            
+            document.getElementById('keyboard-controls-btn').addEventListener('click', () => {
+                menuDropdown.style.display = 'none';
+                showScreen('keyboard');
+            });
+            
+            document.getElementById('back-from-keyboard-btn').addEventListener('click', () => showScreen('main'));
+
+            window.uiNavigate = showScreen;
+        });
+    </script>
+    <script src="./loader.js"></script>
+    <script type="module" src="./src/launcher.js"></script>
+  </body>
+</html>

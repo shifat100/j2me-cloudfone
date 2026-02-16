@@ -1,0 +1,330 @@
+#cheerpjDisplay
+{
+font-family: sans-serif;
+position: relative;
+text-align: center;
+color: black;
+user-select: none;
+z-index: 0;
+overflow: clip;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+pointer-events: none;
+}
+
+div#cheerpjDisplay.loading {
+outline: 1px solid black;
+}
+
+@keyframes fade-out {
+0% { opacity: 1; }
+100% { opacity: 0; }
+}
+
+div#cheerpjDisplay.cjStatusflash:after {
+animation: fade-out 3s linear forwards;
+}
+
+div#cheerpjDisplay.cjStatus:after {
+content: attr(data-status);
+display: inline-block;
+padding: 0px 20px;
+background: #fff;
+line-height: 40px;
+outline: 1px solid black;
+position: relative;
+z-index: 9999;
+}
+
+.cheerpjLocked > div.cjWindow:after {
+content: '';
+background: #000;
+width: 100%;
+height: 100%;
+position: absolute;
+left: 0;
+top: 0;
+right: 0;
+bottom: 0;
+opacity: 0.7;
+pointer-events: none;
+}
+
+.cheerpjLoading {
+pointer-events: none;
+background: url("cheerpj.svg") no-repeat center / 266px 170px white;
+}
+
+@media (prefers-color-scheme: dark) {
+  .cheerpjLoading {
+    background-color: #231f20;
+  }
+}
+
+.cheerpjNC:before {
+position: absolute;
+content: 'CHEERPJ COMMUNITY EDITION - FOR PERSONAL AND NON-BUSINESS USE ONLY';
+left: 0;
+right: 0;
+bottom: 0;
+font-weight: 700;
+background: white;
+padding: 2px 2px 1px 2px;
+border-top: 1px solid black;
+pointer-events: auto;
+cursor: pointer;
+z-index: -999;
+}
+
+div.cjBordered {
+box-shadow: 0px 0px 0px 1px #000;
+}
+
+div.cheerpjOverlay
+{
+height:100%;
+width:100%;
+position:fixed;
+left:0;
+top:0;
+z-index:7;
+background: none;
+pointer-events: none;
+}
+
+.cjMenuBar *
+{
+cursor: default;
+}
+
+.cjMenuBar > .cjMenu > .cjSubMenuItem > span.cjArrow
+{
+display: none;
+}
+
+.cjSubMenuItem:hover > .cjSubMenu
+{
+display: block;
+}
+
+.cjMenuBarClosing .cjSubMenuItem:hover > .cjSubMenu
+{
+display: none;
+}
+
+.cjPopupMenu > .cjMenuItem > .cjSubMenu
+{
+display: block;
+}
+
+.cjMenu
+{
+padding: 0 0px;
+position: relative;
+display: inline-block;
+white-space: nowrap;
+}
+
+.cjSubMenu, .cjMenu
+{
+list-style: none;
+margin: 0;
+}
+
+.cjSubMenu
+{
+display: none;
+min-width: 10em;
+border: 1px solid #ccc;
+background: #EDEDED;
+padding: 0;
+top: 100%;
+}
+
+.cjMenuBar .cjSubMenu
+{
+position: absolute;
+}
+
+
+.cjMenuItem
+{
+float: left;
+}
+
+.cjSubMenu > .cjMenuItem
+{
+float: none;
+position: relative;
+}
+.cjSubMenu > .cjMenuItem > a
+{
+padding: 4px 7px 2px 2px;
+}
+
+.cjMenuItem > a {
+display: inline-block;
+padding: 5px 5px;
+color: black;
+text-decoration: none;
+}
+
+.cjMenuItem:hover {
+background-color: #0099ff;
+}
+
+.cjMenuItem:hover > a {
+color: white;
+}
+
+.cjSubMenuItem > span.cjArrow
+{
+position: absolute;
+right: 0px;
+padding-right: 7px;
+padding-top: 7px;
+font-size: 10px;
+}
+
+.cjSubMenu .cjSubMenu {
+position: absolute; left: 100%; top:0;
+}
+
+div.cjMenuBar
+{
+position:absolute;
+top:0px;
+margin: 0;
+width: 100%;
+background-color: #EDEDED;
+font-size: 13px;
+}
+
+.cjPopupMenu
+{
+position:absolute;
+background-color: #EDEDED;
+font-size: 13px;
+margin: 0;
+padding: 0 0px;
+display: block;
+list-style: none;
+margin: 0;
+white-space: nowrap;
+}
+
+
+div.cjWindow {
+text-align: initial;
+pointer-events: auto;
+touch-action: pinch-zoom;
+}
+
+div.cjWindow > .cjResizerBorder {
+margin: 0;
+padding: 0;
+position: absolute;
+top: -2px;
+left: -2px;
+border-style: solid;
+border-width: 2px;
+pointer-events: none;
+}
+
+div.cjWindow > .cjResizer {
+position: absolute;
+bottom: -10px;
+right: -10px;
+width: 20px;
+height: 20px;
+cursor: nwse-resize;
+touch-action: none;
+}
+
+.cjGlobalResizeCursor {
+cursor: nwse-resize !important;
+}
+
+div.cjWindow > div.cjTitleBar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+background-color: hsla(210, 60%, 60%, 1);
+color: white;
+height: 20px;
+top: 0px;
+position: absolute;
+width: 100%;
+padding-left: 2px;
+padding-top: 1px;
+box-sizing: border-box;
+}
+
+canvas.cjSwapped {
+filter: url("#cjcanvasfilter");
+}
+
+div.cjTitleBar > .cjTitleBarText {
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+overflow-wrap: break-word;
+flex: 1;
+}
+
+div.cjTitleBar > .cjTitle {
+
+padding-left: 3px;
+padding-top: 2px;
+display: inline-block;
+float:left;
+}
+
+div.cjTitleBar > .cjControls {
+margin-left: auto;
+margin-right: 0;
+padding-right: 5px;
+padding-bottom: 2px;
+width: 12px;
+height: 12px;
+fill: none;
+stroke: white;
+stroke-width: 1.5;
+shape-rendering: geometricPrecision;
+stroke-linecap: square;
+stroke-linejoin: round;
+}
+
+.cheerpjApplet
+{
+display: inline-block;
+position: relative;
+user-select: none;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+}
+
+.cjScrollBar
+{
+display: inline-block;
+position: relative;
+background: rgb(217, 217, 217);
+}
+
+.cjScrollBar > div
+{
+border-radius: 5px;
+display: inline-block;
+position: relative;
+background: rgb(174, 174, 174);
+}
+
+.cjScrollbarButton
+{
+display: inline-block;
+background: rgb(174, 174, 174);
+vertical-align: bottom;
+text-align: center;
+}
